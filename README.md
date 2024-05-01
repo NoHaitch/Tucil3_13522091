@@ -69,7 +69,7 @@
 
 ## External Links
 
-- [Spesifikasi](bit.ly/spektucil3stima24)
+- [Spesifikasi](https://bit.ly/spektucil3stima24)
 - [QNA](https://bit.ly/qnastima24)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
