@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Utils {
     /**
      * Print text in Red color
@@ -32,5 +34,18 @@ public class Utils {
             "|__/     \\__/ \\______/ |__/       \\_______/      |________/ \\_______/ \\_______/ \\_______/ \\_______/|__/      \n";
 
         System.out.println("\u001B[34m" + wordLadderAscii + "\u001B[0m");
+    }
+
+    public static void printResult(List<String> result){
+        if(result.isEmpty()){
+            printRed("No solution found.\n");
+            return;
+        }
+
+        System.out.println("Result: ");
+        for (int i = 0; i < result.size(); i++) {
+            System.out.println((i + 1) + ". " + result.get(i).toUpperCase());
+        }  
+        System.out.println();
     }
 }
