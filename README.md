@@ -69,8 +69,7 @@
 
 ## External Links
 
-- [Link A](https://example.com)
-- [Link B](https://example.com)
+- [Spesifikasi](bit.ly/spektucil3stima24)
 - [QNA](https://bit.ly/qnastima24)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
