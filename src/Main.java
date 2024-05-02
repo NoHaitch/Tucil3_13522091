@@ -5,7 +5,7 @@ import graph.*;
 import search.*;
 
 public class Main {
-    private static String dictionaryPath = "../dictionary/dictionary.txt";
+    private static String dictionaryPath = "./dictionary/dictionary.txt";
 
     public static void main(String[] args) {
 
@@ -64,21 +64,34 @@ public class Main {
                 // Create a graph from the dictionary
                 Graph graph = new Graph(dictionary);
 
+                long startTime;
+
                 if(menuInput.equals("1")){
                     System.out.println("\nUniform Cost Search: ");
+
+                    startTime = System.currentTimeMillis();
                     UniformCostSearch UCS = new UniformCostSearch(graph);
                     Utils.printResult(UCS.findShortestPath(source, target));
                     
                 } else if(menuInput.equals("2")){
                     System.out.println("\nGreedy Best First Search: ");
+                    
+                    startTime = System.currentTimeMillis();
                     GreedyBestFirstSearch GBFS = new GreedyBestFirstSearch(graph);
                     Utils.printResult(GBFS.findShortestPath(source, target));
 
                 } else {
                     System.out.println("\nA* Search: ");
+
+                    startTime = System.currentTimeMillis();
                     AStarSearch AStar = new AStarSearch(graph);
                     Utils.printResult(AStar.findShortestPath(source, target));
                 }
+                
+                long endTime = System.currentTimeMillis();
+                long timeTaken = endTime - startTime;
+                System.out.println("Time taken: " + timeTaken + " milliseconds");
+
             } else if(menuInput.equals("4")){
                 break;
 
