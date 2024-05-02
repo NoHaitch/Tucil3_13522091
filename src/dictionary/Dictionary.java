@@ -57,7 +57,7 @@ public class Dictionary {
                 words.add(line.trim().toLowerCase());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //error
         }
     }
 
