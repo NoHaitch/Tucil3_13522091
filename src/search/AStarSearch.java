@@ -1,16 +1,13 @@
 package search;
 
-import graph.*;
 import java.util.*;
 
+import graph.*;
+import pair.*;
+
 public class AStarSearch {
-    private Graph graph;
 
-    public AStarSearch(Graph graph) {
-        this.graph = graph;
-    }
-
-    public List<String> findShortestPath(String source, String target) {
+    public static Pair<List<String>, Integer> findShortestPath(Graph graph, String source, String target) {
         // Create a priority queue to store nodes to be explored, ordered by their f-score
         PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(Node::getFScore));
 
@@ -28,10 +25,13 @@ public class AStarSearch {
         pq.offer(new Node(source, heuristic(source, target), 0));
         gScores.put(source, 0);
 
+        int nodeVisited = 0; // Counter to keep track of visited nodes
+
         // Perform A* Search
         while (!pq.isEmpty()) {
             // Dequeue the node with the lowest f-score
             Node currentNode = pq.poll();
+            nodeVisited++; // Increment visited node count
             String currentWord = currentNode.getWord();
             int currentCost = currentNode.getCost();
 
@@ -43,7 +43,7 @@ public class AStarSearch {
                     shortestPath.add(0, word);
                     word = parent.get(word);
                 }
-                return shortestPath;
+                return new Pair<>(shortestPath, nodeVisited);
             }
 
             // Explore neighbors of the current node
@@ -66,11 +66,11 @@ public class AStarSearch {
         }
 
         // If the target word cannot be reached from the source word
-        return Collections.emptyList();
+        return new Pair<>(Collections.emptyList(), nodeVisited);
     }
 
     // Heuristic function (e.g., Hamming distance, Levenshtein distance, etc.)
-    private int heuristic(String word, String target) {
+    private static int heuristic(String word, String target) {
         // Example: Hamming distance heuristic
         int distance = 0;
         for (int i = 0; i < word.length(); i++) {

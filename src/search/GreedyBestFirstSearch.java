@@ -1,16 +1,13 @@
 package search;
 
-import graph.*;
 import java.util.*;
 
+import graph.*;
+import pair.*;
+
 public class GreedyBestFirstSearch {
-    private Graph graph;
 
-    public GreedyBestFirstSearch(Graph graph) {
-        this.graph = graph;
-    }
-
-    public List<String> findShortestPath(String source, String target) {
+    public static Pair<List<String>, Integer> findShortestPath(Graph graph, String source, String target) {
         // Create a priority queue to store nodes to be explored, ordered by their heuristic value
         PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(Node::getHeuristicValue));
 
@@ -22,10 +19,13 @@ public class GreedyBestFirstSearch {
         // Add the source node to the priority queue with its heuristic value
         pq.offer(new Node(source, heuristic(source, target)));
 
+        int nodeVisited = 0; // Counter to keep track of visited nodes
+
         // Perform Greedy Best First Search
         while (!pq.isEmpty()) {
             // Dequeue the node with the lowest heuristic value
             Node currentNode = pq.poll();
+            nodeVisited++; // Increment visited node count
             String currentWord = currentNode.getWord();
 
             // If the target word is reached, reconstruct and return the shortest path
@@ -36,7 +36,7 @@ public class GreedyBestFirstSearch {
                     shortestPath.add(0, word);
                     word = parent.get(word);
                 }
-                return shortestPath;
+                return new Pair<>(shortestPath, nodeVisited);
             }
 
             // Mark the current node as visited
@@ -55,11 +55,11 @@ public class GreedyBestFirstSearch {
         }
 
         // If the target word cannot be reached from the source word
-        return Collections.emptyList();
+        return new Pair<>(Collections.emptyList(), nodeVisited);
     }
 
     // Heuristic function (e.g., Hamming distance, Levenshtein distance, etc.)
-    private int heuristic(String word, String target) {
+    private static int heuristic(String word, String target) {
         // Example: Hamming distance heuristic
         int distance = 0;
         for (int i = 0; i < word.length(); i++) {

@@ -1,15 +1,11 @@
 package search;
 
-import graph.*;
 import java.util.*;
 
+import graph.*;
+import pair.*;
+
 public class UniformCostSearch {
-    private Graph graph;
-
-    public UniformCostSearch(Graph graph) {
-        this.graph = graph;
-    }
-
     /**
      * Uniform Cost Search Nodes
      * <p>
@@ -36,7 +32,7 @@ public class UniformCostSearch {
     /**
      * Uniform Cost Search
      */
-    public List<String> findShortestPath(String source, String target) {
+    public static Pair<List<String>, Integer> findShortestPath(Graph graph, String source, String target) {
         // Queue of nodes sorted by their cost
         PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(Node::getCost));
 
@@ -49,10 +45,13 @@ public class UniformCostSearch {
         // Add the source node to the priority queue with cost 0
         pq.offer(new Node(source, 0));
 
+        int nodeVisited = 0; // Counter to keep track of visited nodes
+
         // Uniform Cost Search
         while (!pq.isEmpty()) {
             // Get the node with the lowest cost
             Node currentNode = pq.poll();
+            nodeVisited++; // Increment visited node count
             String currentWord = currentNode.getWord();
             int currentCost = currentNode.getCost();
 
@@ -66,7 +65,7 @@ public class UniformCostSearch {
                     shortestPath.add(0, word);
                     word = parent.get(word);
                 }
-                return shortestPath;
+                return new Pair<>(shortestPath, nodeVisited);
             }
 
             // add node to visited
@@ -90,6 +89,6 @@ public class UniformCostSearch {
         }
 
         // If target is not found
-        return Collections.emptyList();
+        return new Pair<>(Collections.emptyList(), nodeVisited);
     }
 }
