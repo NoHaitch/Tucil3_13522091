@@ -12,9 +12,11 @@ public class Main {
 
         System.out.println("========================= Program Started =========================");
         Utils.printWordLadder();
+        // Load english dictionary
         Dictionary fullDictionary = new Dictionary(dictionaryPath);
 
         if(fullDictionary.getWordAmount() == 0){
+            System.err.println("Dictionary not found!");
             return;
         }
         
@@ -53,24 +55,26 @@ public class Main {
                     continue;
                 }
 
-
+                // Create a local dictionary
                 Dictionary dictionary = new Dictionary(fullDictionary);
+                
+                // Only get words with source length
+                dictionary.limitWordLength(source.length());
+                
+                // Create a graph from the dictionary
                 Graph graph = new Graph(dictionary);
 
                 if(menuInput.equals("1")){
-                    dictionary.limitWordLength(source.length());
                     System.out.println("\nUniform Cost Search: ");
                     UniformCostSearch UCS = new UniformCostSearch(graph);
                     Utils.printResult(UCS.findShortestPath(source, target));
                     
                 } else if(menuInput.equals("2")){
-                    dictionary.limitWordLength(source.length());
                     System.out.println("\nGreedy Best First Search: ");
                     GreedyBestFirstSearch GBFS = new GreedyBestFirstSearch(graph);
                     Utils.printResult(GBFS.findShortestPath(source, target));
 
                 } else {
-                    dictionary.limitWordLength(source.length());
                     System.out.println("\nA* Search: ");
                     AStarSearch AStar = new AStarSearch(graph);
                     Utils.printResult(AStar.findShortestPath(source, target));
