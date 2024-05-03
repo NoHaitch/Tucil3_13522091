@@ -45,13 +45,15 @@ public class UniformCostSearch {
         // Add the source node to the priority queue with cost 0
         pq.offer(new Node(source, 0));
 
-        int nodeVisited = 0; // Counter to keep track of visited nodes
+        // Node visited counter
+        int nodeVisited = 0;
 
         // Uniform Cost Search
         while (!pq.isEmpty()) {
             // Get the node with the lowest cost
             Node currentNode = pq.poll();
-            nodeVisited++; // Increment visited node count
+            
+            nodeVisited++; 
             String currentWord = currentNode.getWord();
             int currentCost = currentNode.getCost();
 
@@ -59,7 +61,7 @@ public class UniformCostSearch {
             if (currentWord.equals(target)) {
                 List<String> shortestPath = new ArrayList<>();
                 
-                // Backtrack to reconstruct the result
+                // Reconstruct the result
                 String word = target;
                 while (word != null) {
                     shortestPath.add(0, word);
@@ -71,7 +73,7 @@ public class UniformCostSearch {
             // add node to visited
             visited.put(currentWord, currentCost);
 
-            // Visit neighboring of the current node
+            // add neighboringing node
             for (String neighbor : graph.getAdjacencyList().getOrDefault(currentWord, new ArrayList<>())) {
                 int neighborCost = currentCost + 1; 
 
