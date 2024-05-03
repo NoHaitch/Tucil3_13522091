@@ -30,6 +30,9 @@ public class Main {
 
     }
 
+    /**
+     * Perform the Search
+     */
     private static void performSearch(String algorithm, String source, String target) {
         source = source.toLowerCase();
         target = target.toLowerCase();
@@ -94,6 +97,9 @@ public class Main {
         displayResult(result, timeTaken, nodeVisited, algorithm);
     }
 
+    /**
+     * Create Main Menu Window
+     */
     private static void createAndShowGUI() {
         // Create window
         JFrame frame = new JFrame("Word Ladder Solver");
@@ -205,6 +211,9 @@ public class Main {
         frame.setVisible(true);
     }
 
+    /**
+     * Display Result Window
+     */
     private static void displayResult(List<String>result, long timeTaken, int nodeVisited, String algorithm) {
         // Create and configure the result window
         JFrame resultFrame = new JFrame("Result");
