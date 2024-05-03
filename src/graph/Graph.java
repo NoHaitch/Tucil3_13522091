@@ -21,6 +21,14 @@ public class Graph {
         this.adjacencyList = new HashMap<>();
         buildGraph(dictionary.getWords());
     }
+    
+    /**
+     * Get AdjacencyList
+     */
+    public HashMap<String, ArrayList<String>> getAdjacencyList() {
+        return adjacencyList;
+    }
+
 
     /**
      * Create a Graph from a pool of words with the same length
@@ -53,10 +61,6 @@ public class Graph {
                 chars[i] = originalChar;
             }
         }
-    }
-
-    public HashMap<String, ArrayList<String>> getAdjacencyList() {
-        return adjacencyList;
     }
 
     /**
