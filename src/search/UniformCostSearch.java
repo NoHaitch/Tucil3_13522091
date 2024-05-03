@@ -36,7 +36,7 @@ public class UniformCostSearch {
         // Queue of nodes sorted by their cost
         PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(Node::getCost));
 
-        // Map to track visited nodes
+        // Map to track visited nodes and the smallest cost
         Map<String, Integer> visited = new HashMap<>();
 
         // Map to keep track of the parent node for each node in the shortest path
@@ -57,7 +57,7 @@ public class UniformCostSearch {
             String currentWord = currentNode.getWord();
             int currentCost = currentNode.getCost();
 
-            // target found
+            // Target found
             if (currentWord.equals(target)) {
                 List<String> shortestPath = new ArrayList<>();
                 
@@ -70,10 +70,10 @@ public class UniformCostSearch {
                 return new Pair<>(shortestPath, nodeVisited);
             }
 
-            // add node to visited
+            // Add node to visited
             visited.put(currentWord, currentCost);
 
-            // add neighboringing node
+            // Add neighboringing node
             for (String neighbor : graph.getAdjacencyList().getOrDefault(currentWord, new ArrayList<>())) {
                 int neighborCost = currentCost + 1; 
 
