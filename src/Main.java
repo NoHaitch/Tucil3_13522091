@@ -30,6 +30,70 @@ public class Main {
 
     }
 
+    private static void performSearch(String algorithm, String source, String target) {
+        source = source.toLowerCase();
+        target = target.toLowerCase();
+
+        // Check if source and target are valid
+        if (source.length() != target.length()) {
+            JOptionPane.showMessageDialog(null, "Both Words must be the same length.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!fullDictionary.isValidWord(source)) {
+            JOptionPane.showMessageDialog(null, source + " is not in the dictionary.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!fullDictionary.isValidWord(target)) {
+            JOptionPane.showMessageDialog(null, target + " is not in the dictionary.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Create a local dictionary
+        Dictionary dictionary = new Dictionary(fullDictionary);
+
+        // Only get words with source length
+        dictionary.limitWordLength(source.length());
+
+        // Create a graph from the dictionary
+        Graph graph = new Graph(dictionary);
+
+        long startTime, endTime;    
+        Pair<List<String>, Integer> pairOutput;
+        
+        if (algorithm.equals("UCS")) {
+            // Uniform Cost Search
+            startTime = System.currentTimeMillis();
+            pairOutput = UniformCostSearch.findShortestPath(graph, source, target);
+            endTime = System.currentTimeMillis();
+            
+        } else if (algorithm.equals("GBFS")) {
+            // Greedy Best First Search
+            startTime = System.currentTimeMillis();
+            pairOutput = GreedyBestFirstSearch.findShortestPath(graph, source, target);
+            endTime = System.currentTimeMillis();
+            
+        } else { // AS
+            // A* Search
+            startTime = System.currentTimeMillis();
+            pairOutput = AStarSearch.findShortestPath(graph, source, target);
+            endTime = System.currentTimeMillis();
+            
+        }
+
+        List<String> result = pairOutput.getFirst();
+        int nodeVisited = pairOutput.getSecond();
+        
+        // Calculate time taken
+        long timeTaken = endTime - startTime;
+
+        displayResult(result, timeTaken, nodeVisited, algorithm);
+    }
+
     private static void createAndShowGUI() {
         // Create window
         JFrame frame = new JFrame("Word Ladder Solver");
@@ -141,67 +205,7 @@ public class Main {
         frame.setVisible(true);
     }
 
-    private static void performSearch(String algorithm, String source, String target) {
-        source = source.toLowerCase();
-        target = target.toLowerCase();
-
-        // Check if source and target are valid
-        if (source.length() != target.length()) {
-            JOptionPane.showMessageDialog(null, "Both Words must be the same length.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (!fullDictionary.isValidWord(source)) {
-            JOptionPane.showMessageDialog(null, source + " is not in the dictionary.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (!fullDictionary.isValidWord(target)) {
-            JOptionPane.showMessageDialog(null, target + " is not in the dictionary.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Create a local dictionary
-        Dictionary dictionary = new Dictionary(fullDictionary);
-
-        // Only get words with source length
-        dictionary.limitWordLength(source.length());
-
-        // Create a graph from the dictionary
-        Graph graph = new Graph(dictionary);
-
-        long startTime, endTime;
-        Pair<List<String>, Integer> pairOutput;
-        
-        if (algorithm.equals("UCS")) {
-            // Uniform Cost Search
-            startTime = System.currentTimeMillis();
-            pairOutput = UniformCostSearch.findShortestPath(graph, source, target);
-            endTime = System.currentTimeMillis();
-            
-        } else if (algorithm.equals("GBFS")) {
-            // Greedy Best First Search
-            startTime = System.currentTimeMillis();
-            pairOutput = GreedyBestFirstSearch.findShortestPath(graph, source, target);
-            endTime = System.currentTimeMillis();
-            
-        } else { // AS
-            // A* Search
-            startTime = System.currentTimeMillis();
-            pairOutput = AStarSearch.findShortestPath(graph, source, target);
-            endTime = System.currentTimeMillis();
-            
-        }
-
-        List<String> result = pairOutput.getFirst();
-        int nodeVisited = pairOutput.getSecond();
-        
-        // Calculate time taken
-        long timeTaken = endTime - startTime;
-
+    private static void displayResult(List<String>result, long timeTaken, int nodeVisited, String algorithm) {
         // Create and configure the result window
         JFrame resultFrame = new JFrame("Result");
         resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
