@@ -12,8 +12,8 @@ public class Main {
     private static Dictionary fullDictionary = new Dictionary(dictionaryPath);
     private static int FRAME_HEIGHT_MENU = 360;
     private static int FRAME_WIDTH_MENU = 600;
-    private static int FRAME_HEIGHT_RESULT = 360;
-    private static int FRAME_WIDTH_RESULT = 600;
+    private static int FRAME_HEIGHT_RESULT = 400;
+    private static int FRAME_WIDTH_RESULT = 500;
 
     public static void main(String[] args) {
         System.out.println("========================= Program Started =========================");
@@ -219,6 +219,11 @@ public class Main {
         JFrame resultFrame = new JFrame("Result");
         resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         resultFrame.setSize(FRAME_WIDTH_RESULT, FRAME_HEIGHT_RESULT);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (screenSize.width - resultFrame.getWidth()) / 2;
+        int y = (screenSize.height - resultFrame.getHeight()) / 2;
+        resultFrame.setLocation(x, y);
 
         // Create a panel
         JPanel panel = new JPanel();
