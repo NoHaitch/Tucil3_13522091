@@ -60,7 +60,7 @@ public class Graph {
     }
 
     /**
-     * Debuging
+     * Debugging
      * <p>
      * Print every node and its connections
      */

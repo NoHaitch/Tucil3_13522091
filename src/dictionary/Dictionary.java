@@ -89,7 +89,7 @@ public class Dictionary {
     }
 
     /**
-     * Debuging
+     * Debugging
      * <p>
      * Print words in dictionary using foreach until amount is printed
      * 
