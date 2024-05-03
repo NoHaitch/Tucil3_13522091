@@ -37,10 +37,6 @@ public class Dictionary {
         this.words = new HashSet<>(other.words);
     }
 
-    public int getWordAmount() {
-        return words.size();
-    }
-
     public HashSet<String> getWords(){
         return words;
     }
