@@ -38,6 +38,20 @@ public class Main {
      * Perform the Search
      */
     private static void performSearch(String algorithm, String source, String target) {
+        // Check if source or target are empty
+        if (source.trim().isEmpty() || target.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Source and Target words cannot be empty.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Check if source or target contain spaces
+        if (source.contains(" ") || target.contains(" ")) {
+            JOptionPane.showMessageDialog(null, "Word can not contain space (\" \")", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         source = source.toLowerCase();
         target = target.toLowerCase();
 
