@@ -54,7 +54,7 @@ public class GreedyBestFirstSearch {
         Set<String> visited = new HashSet<>();
         
         // Map to keep track of the parent node for each node in the shortest path
-        Map<String, String> parent = new HashMap<>();
+        List<String> result = new ArrayList<>();
 
         // Add the source node to the priority queue
         pq.offer(new Node(source, heuristic(source, target)));
@@ -67,9 +67,11 @@ public class GreedyBestFirstSearch {
             // Get the node with the smallest heuristic
             Node currentNode = pq.poll();
             pq.clear();
+            System.out.println(currentNode.word);
             
             nodeVisited++;
             String currentWord = currentNode.getWord();
+            result.add(currentWord);
             if(visited.contains(currentWord)){
                 break;
             } else{
@@ -78,21 +80,11 @@ public class GreedyBestFirstSearch {
 
             // Target found
             if (currentWord.equals(target)) {
-                List<String> shortestPath = new ArrayList<>();
-
-                // Reconstruct the result
-                String word = target;
-                while (word != null) {
-                    shortestPath.add(0, word);
-                    word = parent.get(word);
-                }
-                return new Pair<>(shortestPath, nodeVisited);
+                return new Pair<>(result, nodeVisited);
             }
 
             // add neighboring node
             for (String neighbor : graph.getAdjacencyList().getOrDefault(currentWord, new ArrayList<>())) {
-                // Update the parent node for the neighbor
-                parent.put(neighbor, currentWord);
 
                 // Add the neighbor to the priority queue
                 pq.offer(new Node(neighbor, heuristic(neighbor, target)));                        
