@@ -16,6 +16,10 @@ public class Main {
     private static int FRAME_WIDTH_RESULT = 500;
 
     public static void main(String[] args) {
+        // Test.testGBFS();
+        // Test.testUCS();
+        // Test.testAstar();
+        
         System.out.println("========================= Program Started =========================");
 
         if (fullDictionary.getWords().isEmpty()) {
@@ -56,6 +60,12 @@ public class Main {
             return;
         }
 
+        if(source.equals(target)){
+            JOptionPane.showMessageDialog(null, "Word must be different.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         // Create a local dictionary
         Dictionary dictionary = new Dictionary(fullDictionary);
 
@@ -65,26 +75,42 @@ public class Main {
         // Create a graph from the dictionary
         Graph graph = new Graph(dictionary);
 
-        long startTime, endTime;    
+        long startTime, endTime; 
+        long memoryBefore, memoryAfter;   
         Pair<List<String>, Integer> pairOutput;
         
         if (algorithm.equals("UCS")) {
             // Uniform Cost Search
+            Runtime runtime = Runtime.getRuntime();
+            memoryBefore = runtime.freeMemory();
             startTime = System.currentTimeMillis();
+
             pairOutput = UniformCostSearch.findShortestPath(graph, source, target);
+            
             endTime = System.currentTimeMillis();
+            memoryAfter = runtime.freeMemory();
             
         } else if (algorithm.equals("GBFS")) {
             // Greedy Best First Search
+            Runtime runtime = Runtime.getRuntime();
+            memoryBefore = runtime.freeMemory();
             startTime = System.currentTimeMillis();
+            
             pairOutput = GreedyBestFirstSearch.findShortestPath(graph, source, target);
+            
             endTime = System.currentTimeMillis();
+            memoryAfter = runtime.freeMemory();
             
         } else { // AS
             // A* Search
+            Runtime runtime = Runtime.getRuntime();
+            memoryBefore = runtime.freeMemory();
             startTime = System.currentTimeMillis();
+            
             pairOutput = AStarSearch.findShortestPath(graph, source, target);
+            
             endTime = System.currentTimeMillis();
+            memoryAfter = runtime.freeMemory();
             
         }
 
@@ -93,8 +119,12 @@ public class Main {
         
         // Calculate time taken
         long timeTaken = endTime - startTime;
-
-        displayResult(result, timeTaken, nodeVisited, algorithm);
+        long memoryUsed = memoryBefore - memoryAfter;
+        if(result.size() != 0){
+            displayResult(result, timeTaken, nodeVisited, memoryUsed, algorithm);
+        } else{
+            displayResult(timeTaken, nodeVisited, memoryUsed, algorithm);
+        }
     }
 
     /**
@@ -214,7 +244,111 @@ public class Main {
     /**
      * Display Result Window
      */
-    private static void displayResult(List<String>result, long timeTaken, int nodeVisited, String algorithm) {
+    private static void displayResult(List<String>result, long timeTaken, int nodeVisited, long memoryUsed, String algorithm) {
+        // Create and configure the result window
+        JFrame resultFrame = new JFrame("Result");
+        resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        resultFrame.setSize(FRAME_WIDTH_RESULT, FRAME_HEIGHT_RESULT);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (screenSize.width - resultFrame.getWidth()) / 2;
+        int y = (screenSize.height - resultFrame.getHeight()) / 2;
+        resultFrame.setLocation(x, y);
+
+        // Create a panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        // Create header panel
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+
+        // Create a title label
+        JLabel titleLabel = new JLabel("Result");
+        Font titleFont = new Font("FigTree", Font.BOLD, 20);
+        titleLabel.setFont(titleFont);
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(titleLabel);
+
+        // Create a subtitle label
+        JLabel subtitleLabel;
+        if (algorithm.equals("UCS")) {
+            subtitleLabel = new JLabel("Using Uniform Cost Search");
+        } else if (algorithm.equals("GBFS")) {
+            subtitleLabel = new JLabel("Using Greedy Best First Search");
+        } else {
+            subtitleLabel = new JLabel("Using A* algorithm");
+        }
+        Font subtitleFont = new Font("FigTree", Font.PLAIN, 16);
+        subtitleLabel.setFont(subtitleFont);
+        subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(subtitleLabel);
+
+        // Add some vertical space
+        headerPanel.add(Box.createVerticalStrut(24));
+
+        // Add header panel to the main panel
+        panel.add(headerPanel);
+
+        // Create a panel for main content
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+
+        JLabel timeLabel = new JLabel("Time taken: " + timeTaken + " ms");
+        timeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(timeLabel);
+
+        JLabel visitedLabel = new JLabel("Node visited: " + nodeVisited);
+        visitedLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        visitedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(visitedLabel);
+        
+        JLabel memoryLabel = new JLabel("Approximate Memory usage: " + (memoryUsed/1000) +" kb");
+        memoryLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        memoryLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(memoryLabel);
+
+        contentPanel.add(Box.createVerticalStrut(15));
+
+        // Create Panel for list or string result
+        JPanel resultTextPanel = new JPanel(new BorderLayout());
+
+        // Create a list model to hold the result
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for (int i = 0; i < result.size(); i++) {
+            listModel.addElement((i + 1) + ". " + result.get(i));
+        }
+
+        // Create JList with the list model
+        JList<String> resultList = new JList<>(listModel);
+        resultList.setFont(new Font("Arial", Font.PLAIN, 16));
+
+        // Wrap the resultList in a JScrollPane
+        JScrollPane scrollPane = new JScrollPane(resultList);
+        scrollPane.setPreferredSize(new Dimension(300, scrollPane.getPreferredSize().height)); // Set preferred width
+
+        // Wrap the scrollPane in another panel with FlowLayout
+        JPanel resultListPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        resultListPanel.add(scrollPane); // Add the scroll pane to the panel
+
+        // Add the resultListPanel to the resultTextPanel
+        resultTextPanel.add(resultListPanel, BorderLayout.CENTER);
+
+        // Add the resultTextPanel to the contentPanel
+        contentPanel.add(resultTextPanel);
+
+        panel.add(contentPanel);
+
+        // Add result panel to the frame and display
+        resultFrame.add(panel);
+        resultFrame.setVisible(true);
+    }
+
+    /**
+     * Display Result Window for solution not found
+     */
+    private static void displayResult(long timeTaken, int nodeVisited, long memoryUsed, String algorithm) {
         // Create and configure the result window
         JFrame resultFrame = new JFrame("Result");
         resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -274,34 +408,20 @@ public class Main {
         visitedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPanel.add(visitedLabel);
 
+        JLabel memoryLabel = new JLabel("Approximate Memory usage: " + (memoryUsed/1000) +" kb");
+        memoryLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        memoryLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(memoryLabel);
+
         contentPanel.add(Box.createVerticalStrut(15));
 
         // Create Panel for list or string result
-        JPanel resultTextPanel = new JPanel(new BorderLayout());
-
-        // Create a list model to hold the result
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        for (int i = 0; i < result.size(); i++) {
-            listModel.addElement((i + 1) + ". " + result.get(i));
-        }
-
-        // Create JList with the list model
-        JList<String> resultList = new JList<>(listModel);
-        resultList.setFont(new Font("Arial", Font.PLAIN, 16));
-
-        // Wrap the resultList in a JScrollPane
-        JScrollPane scrollPane = new JScrollPane(resultList);
-        scrollPane.setPreferredSize(new Dimension(300, scrollPane.getPreferredSize().height)); // Set preferred width
-
-        // Wrap the scrollPane in another panel with FlowLayout
-        JPanel resultListPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        resultListPanel.add(scrollPane); // Add the scroll pane to the panel
-
-        // Add the resultListPanel to the resultTextPanel
-        resultTextPanel.add(resultListPanel, BorderLayout.CENTER);
+        JLabel noSolutionLabel = new JLabel("No Solution Found");
+        noSolutionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        noSolutionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Add the resultTextPanel to the contentPanel
-        contentPanel.add(resultTextPanel);
+        contentPanel.add(noSolutionLabel);
 
         panel.add(contentPanel);
 
