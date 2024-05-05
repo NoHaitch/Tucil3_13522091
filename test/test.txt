@@ -1,0 +1,23 @@
+1. Test Case 1
+Source: pool
+Target: milk
+
+2. Test Case 2
+Source: words
+Target: novel
+
+3. Test Case 3
+Source: flit
+Target: offs
+
+4. Test Case 4
+Source: clock
+Target: power
+
+5. Test Case 5
+Source: gimlets
+Target: treeing
+
+6. Test Case 6
+Source: remap
+Target: limbs
