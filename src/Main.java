@@ -27,8 +27,6 @@ public class Main {
             return;
         }
 
-        Utils.printWordLadder();
-
         // Create and show the Swing UI
         SwingUtilities.invokeLater(() -> createAndShowGUI());
 
