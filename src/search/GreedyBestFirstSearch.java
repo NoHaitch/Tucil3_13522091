@@ -67,7 +67,6 @@ public class GreedyBestFirstSearch {
             // Get the node with the smallest heuristic
             Node currentNode = pq.poll();
             pq.clear();
-            System.out.println(currentNode.word);
             
             nodeVisited++;
             String currentWord = currentNode.getWord();
