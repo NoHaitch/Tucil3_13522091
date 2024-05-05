@@ -67,8 +67,6 @@ public class GreedyBestFirstSearch {
             // Get the node with the smallest heuristic
             Node currentNode = pq.poll();
             pq.clear();
-            System.out.println(currentNode.word);
-
             
             nodeVisited++;
             String currentWord = currentNode.getWord();
@@ -93,7 +91,6 @@ public class GreedyBestFirstSearch {
 
             // add neighboring node
             for (String neighbor : graph.getAdjacencyList().getOrDefault(currentWord, new ArrayList<>())) {
-                System.err.println("child: " + neighbor + heuristic(neighbor, target));
                 // Update the parent node for the neighbor
                 parent.put(neighbor, currentWord);
 
