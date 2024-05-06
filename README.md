@@ -123,8 +123,9 @@ Use run-bat.bat or run-sh.sh for ease of use
 
 <!-- INSTURCTION -->
 ## Instruction
-1. Use run-bat.bat or run-sh.sh to run and build the program
+Note: Program will use dictionary.txt in the dictionary directory for the English dictionary representation. Dictionary.txt is not a perfect dictionary and may loss some English words.
 
+1. Use run-bat.bat or run-sh.sh to run and build the program
 2. Input Source Word
 3. Input Target Word
 4. Press one of the three buttons:
