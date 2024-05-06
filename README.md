@@ -67,6 +67,7 @@
 
 - [Spesifikasi](https://bit.ly/spektucil3stima24)
 - [QNA](https://bit.ly/qnastima24)
+- [Laporan](https://github.com/NoHaitch/Tucil3_13522091/blob/main/doc/Tucil3_13522091.pdf)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
