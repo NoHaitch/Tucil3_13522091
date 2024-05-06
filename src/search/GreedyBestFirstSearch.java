@@ -70,13 +70,9 @@ public class GreedyBestFirstSearch {
             
             nodeVisited++;
             String currentWord = currentNode.getWord();
+            visited.add(currentWord);
             result.add(currentWord);
-            if(visited.contains(currentWord)){
-                break;
-            } else{
-                visited.add(currentWord);
-            }
-
+            
             // Target found
             if (currentWord.equals(target)) {
                 return new Pair<>(result, nodeVisited);
@@ -84,9 +80,12 @@ public class GreedyBestFirstSearch {
 
             // add neighboring node
             for (String neighbor : graph.getAdjacencyList().getOrDefault(currentWord, new ArrayList<>())) {
-
-                // Add the neighbor to the priority queue
-                pq.offer(new Node(neighbor, heuristic(neighbor, target)));                        
+                // If neighbor have not been visited
+                if(!visited.contains(neighbor)){
+                    
+                    // Add the neighbor to the priority queue
+                    pq.offer(new Node(neighbor, heuristic(neighbor, target)));                        
+                }
             }
         }
 
