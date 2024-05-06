@@ -4,6 +4,9 @@ import graph.*;
 import search.*;
 import pair.*;
 
+/**
+ * For Testing the search algorithm
+ */
 public class Test {
     private static String dictionaryPath = "../dictionary/dictionary.txt";
     private static Dictionary fullDictionary = new Dictionary(dictionaryPath);
